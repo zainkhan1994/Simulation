@@ -1,84 +1,67 @@
-# Simulation
+import streamlit as st
 
-# Thyroid Function Simulation
+# Title of the simulation
+st.title("Thyroid Function Simulation")
 
-This project is an interactive tool to simulate and explore how changes in thyroid-related lab test results correlate with potential dysfunctions and symptoms. While currently designed for thyroid function tests, the framework can be expanded to include other medical tests for different organs or systems.
+# Description of the tool
+st.write("This interactive simulation helps you explore how changes in thyroid-related lab test results could correlate with potential dysfunctions and symptoms.")
 
-## Overview
-The simulation allows users to:
-- Input test results for TSH, Free T4, Free T3, and thyroid-related antibodies (TPO and Thyroglobulin).
-- Tinker with the values to observe how abnormalities in these tests connect to specific thyroid dysfunctions or related symptoms like hair loss and brain fog.
-- Understand potential root causes, including regulatory systems such as the pituitary gland, hypothalamus, liver, or immune system.
+# Input fields for lab test results
+tsh = st.slider("TSH (mIU/L)", min_value=0.0, max_value=10.0, value=2.5, step=0.1)
+free_t4 = st.slider("Free T4 (ng/dL)", min_value=0.5, max_value=2.5, value=1.2, step=0.1)
+free_t3 = st.slider("Free T3 (pg/mL)", min_value=2.0, max_value=6.0, value=3.5, step=0.1)
+anti_tpo = st.slider("TPO Antibodies (IU/mL)", min_value=0, max_value=500, value=25, step=5)
+anti_tg = st.slider("Thyroglobulin Antibodies (IU/mL)", min_value=0, max_value=500, value=20, step=5)
 
-The tool provides:
-1. **Dynamic insights** based on user input.
-2. **Symptom mapping** tied to lab abnormalities.
-3. **Recommendations** for further evaluation or management strategies.
+# Analyze results and provide potential insights
+st.subheader("Analysis")
 
-## Key Features
-- Interactive sliders for lab test values:
-  - TSH (Thyroid-Stimulating Hormone)
-  - Free T4 (Thyroxine)
-  - Free T3 (Triiodothyronine)
-  - TPO Antibodies
-  - Thyroglobulin Antibodies
-- Real-time analysis of thyroid health.
-- Decision-tree-like logic to connect test results to symptoms and potential causes.
-- Expandable design for future tests and systems.
+if tsh < 0.5:
+    st.write("**Low TSH:** This may indicate hyperthyroidism (overactive thyroid). Consider checking Free T4 and Free T3 for confirmation.")
+elif tsh > 5.0:
+    st.write("**High TSH:** This may indicate hypothyroidism (underactive thyroid). Evaluate Free T4 and Free T3 to confirm.")
+else:
+    st.write("**Normal TSH:** Thyroid function appears normal based on TSH levels.")
 
-## Future Expansion
-This simulation is designed to grow and include tests for other organs or systems, such as:
-- **Liver Function Tests** (ALT, AST, Bilirubin, etc.)
-- **Adrenal Function Tests** (Cortisol, ACTH)
-- **Kidney Function Tests** (eGFR, Creatinine, BUN)
-- **Nutritional Deficiencies** (Iron, Selenium, Vitamin D, etc.)
+if free_t4 < 0.8:
+    st.write("**Low Free T4:** This suggests underactive thyroid or central hypothyroidism (pituitary/hypothalamus issue).")
+elif free_t4 > 2.0:
+    st.write("**High Free T4:** This is consistent with hyperthyroidism.")
+else:
+    st.write("**Normal Free T4:** No abnormalities detected in Free T4 levels.")
 
-The goal is to build a comprehensive decision-making roadmap that links test results to the root cause of dysfunctions, helping users understand complex relationships in the body.
+if free_t3 < 2.3:
+    st.write("**Low Free T3:** This may indicate poor conversion of T4 to T3 (e.g., due to liver issues or selenium deficiency).")
+elif free_t3 > 4.2:
+    st.write("**High Free T3:** Often seen in hyperthyroidism.")
+else:
+    st.write("**Normal Free T3:** Free T3 levels are within the expected range.")
 
-## Requirements
-- **Python 3.7+**
-- **Streamlit**
+if anti_tpo > 35:
+    st.write("**High TPO Antibodies:** This is indicative of Hashimoto's Thyroiditis or another autoimmune thyroid condition.")
+else:
+    st.write("**Normal TPO Antibodies:** No evidence of autoimmune thyroid disease based on TPO antibodies.")
 
-Install Streamlit using pip:
-```bash
-pip install streamlit
-```
+if anti_tg > 40:
+    st.write("**High Thyroglobulin Antibodies:** This may indicate Hashimoto's or another autoimmune condition affecting the thyroid.")
+else:
+    st.write("**Normal Thyroglobulin Antibodies:** No evidence of autoimmune thyroid disease based on thyroglobulin antibodies.")
 
-## How to Run
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/ThyroidSimulation.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd ThyroidSimulation
-   ```
-3. Run the Streamlit app:
-   ```bash
-   streamlit run thyroid_simulation.py
-   ```
-4. Open the app in your browser using the link provided by Streamlit.
+# Symptom mapping and recommendations
+st.subheader("Symptom Mapping")
 
-## Usage Instructions
-1. Input your lab test results using the sliders.
-2. Observe the real-time analysis and insights in the "Analysis" section.
-3. Explore potential root causes in the "Symptom Mapping" section.
-4. Review recommendations for next steps based on the input.
+st.write("Based on your inputs, here are potential causes for symptoms like hair loss and brain fog:")
+if tsh > 5.0 or free_t4 < 0.8:
+    st.write("- Hypothyroidism: Common symptoms include hair loss, brain fog, and fatigue.")
+if free_t3 < 2.3:
+    st.write("- Poor T4 to T3 conversion: Consider evaluating liver function and selenium levels.")
+if anti_tpo > 35 or anti_tg > 40:
+    st.write("- Autoimmune thyroid disease: Symptoms may include inflammation and gradual thyroid dysfunction.")
 
-## Example Use Case
-- A user inputs low TSH and high Free T4 levels. The simulation identifies potential hyperthyroidism and suggests further evaluation of TPO antibodies to check for autoimmune causes.
-- If Free T3 is low, the app suggests evaluating selenium levels and liver function for impaired T4 to T3 conversion.
-
-## Contributing
-This project is open to contributions! If you'd like to add new tests or features:
-1. Fork the repository.
-2. Create a new branch for your feature.
-3. Submit a pull request with a clear description of your changes.
-
-## License
-This project is licensed under the MIT License.
-
-## Contact
-For questions or suggestions, feel free to reach out:
-- **Author**: Zain Khan
-
+st.write("### Recommendations")
+if tsh > 5.0 or free_t4 < 0.8:
+    st.write("- Discuss potential hypothyroidism with your provider and consider further testing.")
+if anti_tpo > 35 or anti_tg > 40:
+    st.write("- Autoimmune-focused interventions (e.g., anti-inflammatory diet, stress management).")
+if free_t3 < 2.3:
+    st.write("- Assess selenium and liver health to improve T4 to T3 conversion.")
